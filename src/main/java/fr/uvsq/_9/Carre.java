@@ -15,7 +15,14 @@ public class Carre implements Forme {
      * taille du carrée.
      */
     private int size;
-
+    /**
+     * Id d'un carré
+     */
+    private int iD = 0;
+    
+    public void SetID(int newID) {
+        iD = newID;
+    }
     /**
      * constructeur de la class carrée.
      * @param setp point de référence du carrée
@@ -39,6 +46,17 @@ public class Carre implements Forme {
     @Override
     public String toString() {
         return "Carre " + p.toString() + " " + size;
+    }
+
+    public Point getP() {
+        return p;
+    }
+
+    public int getSize() {
+        return size;
+    }
+    public int getID() {
+        return iD;
     }
 
 }

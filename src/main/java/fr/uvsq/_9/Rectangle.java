@@ -5,6 +5,9 @@ package fr.uvsq._9;
  */
 public class Rectangle implements Forme {
 
+   /**
+    * point de référence du rectangle
+    */
    private Point p;
    /**
     * longueur du rectangle.
@@ -28,6 +31,7 @@ public class Rectangle implements Forme {
    }
    /**
     * methode qui deplace un rectangle.
+    * @param depl qui sert pour le déplacement
     */
    public void deplace(final Point depl) {
       p = depl;

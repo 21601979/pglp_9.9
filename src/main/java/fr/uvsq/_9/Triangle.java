@@ -31,6 +31,7 @@ public class Triangle implements Forme {
 
     /**
      * methode qui déplace un triangle.
+     * @param depl point qui sert pour le déplacement
      */
     public void deplace(final Point depl) {
        int diffx = depl.getX() - p1.getX();
@@ -45,7 +46,7 @@ public class Triangle implements Forme {
      */
     @Override
     public String toString() {
-        return "Triangle " + p1.toString() 
+        return "Triangle " + p1.toString()
         + " " + p2.toString() + " " + p3.toString();
     }
 
