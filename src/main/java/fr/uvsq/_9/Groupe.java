@@ -12,11 +12,14 @@ public class Groupe implements Forme {
      * liste de forme.
      */
     private ArrayList<Forme> l = new ArrayList<Forme>();
+    private String id;
 
     /**
      * constructeur d'un groupe de forme.
      */
-    public Groupe() { }
+    public Groupe(String name) {
+        id = name;
+    }
 
     /**
      * methode qui déplace un groupe de forme.
@@ -48,5 +51,13 @@ public class Groupe implements Forme {
             res = res + "( " + i.next().toString() + " )";
         }
         return res;
+    }
+
+    public String getID() {
+        return id;
+    }
+
+    public Iterator<Forme> getIterator() {
+        return l.iterator();
     }
 }

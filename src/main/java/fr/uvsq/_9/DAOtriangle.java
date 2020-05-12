@@ -6,19 +6,20 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
- * DAO qui gère les opération CRUD pour un carrée dans la BDD.
+ * DAO d'un triangle.
  * @author Tanguy
  */
-public class DAOcarre extends DAO<Carre> {
+public class DAOtriangle extends DAO<Triangle> {
+
     /**
-     * methode qui cree un carrée dans la BDD.
+     * methode qui crée un triangle.
      */
     @Override
-    public void create(final Carre obj) throws ExisteDejaException {
+    public void create(final Triangle obj) throws ExisteDejaException {
         Connection conect = null;
-        String addCreate = "INSERT INTO Carre"
-                + "(x,y,taille,ID)"
-                + "VALUES(?,?,?,?)";
+        String addCreate = "INSERT INTO Triangle"
+                + "(x1,y1,x2,y2,x3,y3,ID)"
+                + "VALUES(?,?,?,?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
         String addName = "INSERT INTO Name VALUES(?)";
         try {
@@ -33,16 +34,23 @@ public class DAOcarre extends DAO<Carre> {
             }
             final int trois = 3;
             final int quatre = 4;
+            final int cinq = 5;
+            final int six = 6;
+            final int sept = 7;
             PreparedStatement prep = conect.prepareStatement(addCreate);
             PreparedStatement prepName = conect.prepareStatement(addName);
             prepName.setString(1, obj.getID());
             prepName.executeUpdate();
-            prep.setInt(1, obj.getP().getX());
-            prep.setInt(2, obj.getP().getY());
-            prep.setInt(trois, obj.getSize());
-            prep.setString(quatre, obj.getID());
+            prep.setInt(1, obj.getp1().getX());
+            prep.setInt(2, obj.getp1().getY());
+            prep.setInt(trois, obj.getp2().getX());
+            prep.setInt(quatre, obj.getp2().getY());
+            prep.setInt(cinq, obj.getp3().getX());
+            prep.setInt(six, obj.getp3().getY());
+            prep.setString(sept, obj.getID());
             prep.executeUpdate();
-            System.out.println("le carré est enregistré avec l'ID " + obj.getID());
+            System.out.println("le triangle est enregistré avec l'ID "
+            + obj.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -53,21 +61,25 @@ public class DAOcarre extends DAO<Carre> {
             }
         }
     }
+
     /**
-     * methode qui permet de trouver un carré dans la BDD.
+     * methode qui trouve un triangle.
      */
     @Override
-    public Carre find(final String iD) {
+    public Triangle find(final String iD) {
         Connection conect = null;
-        String searchCarre = "SELECT * FROM Carre WHERE ID = iD";
+        String searchtriangle = "SELECT * FROM Triangle WHERE ID = iD";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
-        PreparedStatement prepsearch = conect.prepareStatement(searchCarre);
+        PreparedStatement prepsearch = conect.prepareStatement(searchtriangle);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
-            Carre res = new Carre(new Point(result.getInt("x"),
-                    result.getInt("y")), result.getInt("taille"),result.getString("ID"));
+            Triangle res = new Triangle(
+                    new Point(result.getInt("x1"), result.getInt("y1")),
+                    new Point(result.getInt("x2"), result.getInt("y2")),
+                    new Point(result.getInt("x3"), result.getInt("y3")),
+                    result.getString("ID"));
             return res;
         }
         } catch (SQLException e) {
@@ -81,14 +93,15 @@ public class DAOcarre extends DAO<Carre> {
         }
         return null;
     }
+
     /**
-     * methode qui supprime un carre.
+     * methode qui supprime un triangle.
      */
     @Override
-    public void delete(final Carre obj) throws ExistePasException {
+    public void delete(final Triangle obj) throws ExistePasException {
         Connection conect = null;
         if (find(obj.getID() + "") != null) {
-            String del = "DELETE FROM Carre WHERE ID = ?";
+            String del = "DELETE FROM Triangle WHERE ID = ?";
             String delName = "DELETE FROM Name WHERE ID = ?";
             try {
                 conect = DriverManager.getConnection("jdbc:"
@@ -110,32 +123,37 @@ public class DAOcarre extends DAO<Carre> {
             }
         } else {
             throw new ExistePasException();
-        } 
+        }
     }
     /**
-     * methode qui update un carre.
+     * methode qui update un triangle.
      */
     @Override
-    public Carre update(final Carre obj) throws ExistePasException {
+    public Triangle update(final Triangle obj) throws ExistePasException {
         Connection conect = null;
         if (find(obj.getID() + "") != null) {
-            String updateCarre = "UPDATE Carre "
-                    + "SET x = ?, y = ?, taille = ? "
+            String updateCercle = "UPDATE Triangle "
+                    + "SET x1 = ?, y1 = ?, x2 = ?, y2 = ?, x3 = ?, y3 = ? "
                     + "WHERE ID = ?";
             try {
                 conect = DriverManager.getConnection("jdbc:"
                         + "derby:BDD;create=true");
-                PreparedStatement prep = conect.prepareStatement(updateCarre);
+                PreparedStatement prep = conect.prepareStatement(updateCercle);
                 final int trois = 3;
                 final int quatre = 4;
-                prep.setInt(1, obj.getP().getX());
-                prep.setInt(2, obj.getP().getY());
-                prep.setInt(trois, obj.getSize());
-                prep.setString(quatre, obj.getID());
+                final int cinq = 5;
+                final int six = 6;
+                final int sept = 7;
+                prep.setInt(1, obj.getp1().getX());
+                prep.setInt(2, obj.getp1().getY());
+                prep.setInt(trois, obj.getp2().getX());
+                prep.setInt(quatre, obj.getp2().getY());
+                prep.setInt(cinq, obj.getp3().getX());
+                prep.setInt(six, obj.getp3().getY());
+                prep.setString(sept, obj.getID());
                 prep.executeUpdate();
                 return obj;
             } catch (SQLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         } else {

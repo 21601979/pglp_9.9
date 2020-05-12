@@ -9,5 +9,7 @@ public interface Forme {
      * methode abstraite qui permet de déplacer une forme.
      * @param depl point utiliser pour le déplacement
      */
-    public abstract void deplace(Point depl);
+    void deplace(Point depl);
+    
+    String getID();
 }

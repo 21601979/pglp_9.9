@@ -4,64 +4,100 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
-public class BDD {
+/**
+ * class qui gère la création et la supression de la BD.
+ * @author Tanguy
+ *
+ */
+public abstract class BDD {
+    /**
+     * methode qui initialise la BDD.
+     */
     public static void initBDD() {
         Connection conect = null;
         try {
             conect = DriverManager.getConnection("jdbc:derby:BDD;create=true");
-            String CercleTable = "CREATE TABLE Cercle("
+            String cercleTable = "CREATE TABLE Cercle("
             + "x int,"
             + "y int,"
             + "rayon int,"
-            + "ID int,"
+            + "ID varchar(30),"
             + "PRIMARY KEY(ID)"
             + ")";
-            String CarreTable = "CREATE TABLE Carre("
+            String carreTable = "CREATE TABLE Carre("
             + "x int,"
             + "y int,"
             + "taille int,"
-            + "ID int,"
+            + "ID varchar(30),"
             + "PRIMARY KEY(ID)"
             + ")";
-            String CarreRectangle = "CREATE TABLE Rectangle("
+            String carreRectangle = "CREATE TABLE Rectangle("
             + "x int,"
             + "y int,"
             + "longueur int,"
             + "hauteur int,"
-            + "ID int,"
+            + "ID varchar(30),"
             + "PRIMARY KEY(ID)"
             + ")";
-            String CarreTriangle = "CREATE TABLE Triangle("
+            String carreTriangle = "CREATE TABLE Triangle("
             + "x1 int,"
             + "y1 int,"
             + "x2 int,"
             + "y2 int,"
             + "x3 int,"
             + "y3 int,"
-            + "ID int,"
+            + "ID varchar(30),"
             + "PRIMARY KEY(ID)"
             + ")";
+            String Name = "CREATE TABLE Name("
+                    + "ID varchar(30),"
+                    + "PRIMARY KEY(ID)"
+                    + ")";
+            String Groupe = "CREATE TABLE Groupe("
+                    + "IDgroupe varchar(30),"
+                    + "IDforme varchar(30),"
+                    + "type varchar(30),"
+                    + "PRIMARY KEY(IDgroupe,IDforme),"
+                    + "FOREIGN KEY(IDforme) REFERENCES Name(ID)"
+                    + ")";
             Statement stmt = conect.createStatement();
 
             try {
-                stmt.execute(CercleTable);
-            } catch(SQLException e) { e.printStackTrace(); }
+                stmt.execute(cercleTable);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
             try {
-                stmt.execute(CarreTable);
-            } catch(SQLException e) { e.printStackTrace(); }
+                stmt.execute(carreTable);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
             try {
-                stmt.execute(CarreRectangle);
-            } catch(SQLException e) { e.printStackTrace(); }
+                stmt.execute(carreRectangle);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
             try {
-                stmt.execute(CarreTriangle);
-            } catch(SQLException e) { e.printStackTrace(); }
+                stmt.execute(carreTriangle);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
+            try {
+                stmt.execute(Name);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
+            try {
+                stmt.execute(Groupe);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * methode qui supprime la base de données.
      */
@@ -75,6 +111,8 @@ public class BDD {
                 stmt.execute("DROP TABLE Carre");
                 stmt.execute("DROP TABLE Rectangle");
                 stmt.execute("DROP TABLE Triangle");
+                stmt.execute("DROP TABLE Groupe");
+                stmt.execute("DROP TABLE Name");
 
             } catch (SQLException e) {
                 e.printStackTrace();

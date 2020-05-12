@@ -14,19 +14,25 @@ public class Cercle implements Forme {
      * rayon du cercle.
      */
     private int rayon;
+    /**
+     * id d'un cercle.
+     */
+    private String iD;
 
     /**
      * constructeur de la class cercle.
      * @param midle point du centre
      * @param size rayon du cercle
      */
-    public Cercle(final Point midle, final int size) {
+    public Cercle(final Point midle, final int size, final String name) {
         centre = midle;
         rayon = size;
+        iD = name;
     }
 
     /**
      * methode pour déplacer un triangle.
+     * @param depl poit qui permet de déplacer un cercle
      */
     public void deplace(final Point depl) {
         centre = depl;
@@ -38,6 +44,18 @@ public class Cercle implements Forme {
     @Override
     public String toString() {
         return "Cercle " + centre.toString() + " " + rayon;
+    }
+
+    public String getID() {
+        return iD;
+    }
+
+    public Point getCentre() {
+        return centre;
+    }
+
+    public int getRayon() {
+        return rayon;
     }
 
 }

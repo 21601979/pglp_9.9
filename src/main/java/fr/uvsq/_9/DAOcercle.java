@@ -5,19 +5,21 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 /**
- * DAO qui gère les opération CRUD pour un carrée dans la BDD.
+ * DAO pour l'objet cercle.
  * @author Tanguy
  */
-public class DAOcarre extends DAO<Carre> {
+public class DAOcercle extends DAO<Cercle> {
+
     /**
-     * methode qui cree un carrée dans la BDD.
+     * methode qui crée un cercle.
      */
     @Override
-    public void create(final Carre obj) throws ExisteDejaException {
+    public void create(final Cercle obj) throws ExisteDejaException {
         Connection conect = null;
-        String addCreate = "INSERT INTO Carre"
-                + "(x,y,taille,ID)"
+        String addCreate = "INSERT INTO Cercle"
+                + "(x,y,rayon,ID)"
                 + "VALUES(?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
         String addName = "INSERT INTO Name VALUES(?)";
@@ -37,12 +39,13 @@ public class DAOcarre extends DAO<Carre> {
             PreparedStatement prepName = conect.prepareStatement(addName);
             prepName.setString(1, obj.getID());
             prepName.executeUpdate();
-            prep.setInt(1, obj.getP().getX());
-            prep.setInt(2, obj.getP().getY());
-            prep.setInt(trois, obj.getSize());
+            prep.setInt(1, obj.getCentre().getX());
+            prep.setInt(2, obj.getCentre().getY());
+            prep.setInt(trois, obj.getRayon());
             prep.setString(quatre, obj.getID());
             prep.executeUpdate();
-            System.out.println("le carré est enregistré avec l'ID " + obj.getID());
+            System.out.println("le Cercle est enregistré avec l'ID "
+            + obj.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -53,21 +56,23 @@ public class DAOcarre extends DAO<Carre> {
             }
         }
     }
+
     /**
-     * methode qui permet de trouver un carré dans la BDD.
+     * methode qui trouve un cercle.
      */
     @Override
-    public Carre find(final String iD) {
+    public Cercle find(final String iD) {
         Connection conect = null;
-        String searchCarre = "SELECT * FROM Carre WHERE ID = iD";
+        String searchCercle = "SELECT * FROM Cercle WHERE ID = iD";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
-        PreparedStatement prepsearch = conect.prepareStatement(searchCarre);
+        PreparedStatement prepsearch = conect.prepareStatement(searchCercle);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
-            Carre res = new Carre(new Point(result.getInt("x"),
-                    result.getInt("y")), result.getInt("taille"),result.getString("ID"));
+            Cercle res = new Cercle(new Point(result.getInt("x"),
+                    result.getInt("y")), result.getInt("rayon"),
+                    result.getString("ID"));
             return res;
         }
         } catch (SQLException e) {
@@ -81,14 +86,15 @@ public class DAOcarre extends DAO<Carre> {
         }
         return null;
     }
+
     /**
-     * methode qui supprime un carre.
+     * methode qui suprime un cercle.
      */
     @Override
-    public void delete(final Carre obj) throws ExistePasException {
+    public void delete(final Cercle obj) throws ExistePasException {
         Connection conect = null;
         if (find(obj.getID() + "") != null) {
-            String del = "DELETE FROM Carre WHERE ID = ?";
+            String del = "DELETE FROM Cercle WHERE ID = ?";
             String delName = "DELETE FROM Name WHERE ID = ?";
             try {
                 conect = DriverManager.getConnection("jdbc:"
@@ -110,27 +116,28 @@ public class DAOcarre extends DAO<Carre> {
             }
         } else {
             throw new ExistePasException();
-        } 
+        }
     }
+
     /**
-     * methode qui update un carre.
+     * methode qui update un cercle.
      */
     @Override
-    public Carre update(final Carre obj) throws ExistePasException {
+    public Cercle update(final Cercle obj) throws ExistePasException {
         Connection conect = null;
         if (find(obj.getID() + "") != null) {
-            String updateCarre = "UPDATE Carre "
-                    + "SET x = ?, y = ?, taille = ? "
+            String updateCercle = "UPDATE Cercle "
+                    + "SET x = ?, y = ?, rayon = ? "
                     + "WHERE ID = ?";
             try {
                 conect = DriverManager.getConnection("jdbc:"
                         + "derby:BDD;create=true");
-                PreparedStatement prep = conect.prepareStatement(updateCarre);
+                PreparedStatement prep = conect.prepareStatement(updateCercle);
                 final int trois = 3;
                 final int quatre = 4;
-                prep.setInt(1, obj.getP().getX());
-                prep.setInt(2, obj.getP().getY());
-                prep.setInt(trois, obj.getSize());
+                prep.setInt(1, obj.getCentre().getX());
+                prep.setInt(2, obj.getCentre().getY());
+                prep.setInt(trois, obj.getRayon());
                 prep.setString(quatre, obj.getID());
                 prep.executeUpdate();
                 return obj;

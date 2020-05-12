@@ -22,14 +22,16 @@ public abstract class DAO<T> {
     /**
      * methode qui supprime un objet.
      * @param obj objet a suprimé
-     * @throws ExistePasException exeption renvoyée si on cherche a supprimer un objet qui n'existe pas
+     * @throws ExistePasException exeption renvoyée si on
+     * cherche a supprimer un objet qui n'existe pas
      */
     public abstract void delete(T obj) throws ExistePasException;
     /**
      * methode qui update un objet.
      * @param obj a suprimer
      * @return retour de l'objet update
-     * @throws ExistePasException exeption renvoyée si on cherche a supprimer un objet qui n'existe pas
+     * @throws ExistePasException exeption renvoyée si on
+     * cherche a supprimer un objet qui n'existe pas
      */
     public abstract T update(T obj) throws ExistePasException;
 }

@@ -8,9 +8,9 @@ public class GroupeTest {
 
     @Test
     public void Groupetest() {
-        Carre r = new Carre(new Point(1, 1), 10);
-        Cercle c = new Cercle(new Point(1,1), 10);
-        Groupe g = new Groupe();
+        Carre r = new Carre(new Point(1, 1), 10, "1");
+        Cercle c = new Cercle(new Point(1,1), 10, "1");
+        Groupe g = new Groupe("a");
         g.add(r);
         g.add(c);
         assertEquals(g.toString(),"( Carre (1,1) 10 )( Cercle (1,1) 10 )");
@@ -18,9 +18,9 @@ public class GroupeTest {
     
     @Test
     public void groupeTestDeplace() {
-        Carre r = new Carre(new Point(1, 1), 10);
-        Cercle c = new Cercle(new Point(1,1), 10);
-        Groupe g = new Groupe();
+        Carre r = new Carre(new Point(1, 1), 10, "1");
+        Cercle c = new Cercle(new Point(1,1), 10, "1");
+        Groupe g = new Groupe("a");
         g.add(r);
         g.add(c);
         g.deplace(new Point(10,10));
