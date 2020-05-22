@@ -1,10 +1,15 @@
-package fr.uvsq._9;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import forme.Point;
+import forme.Triangle;
+import fr.uvsq._9.ExisteDejaException;
+import fr.uvsq._9.ExistePasException;
 /**
  * DAO d'un triangle.
  * @author Tanguy
@@ -103,15 +108,20 @@ public class DAOtriangle extends DAO<Triangle> {
         if (find(obj.getID() + "") != null) {
             String del = "DELETE FROM Triangle WHERE ID = ?";
             String delName = "DELETE FROM Name WHERE ID = ?";
+            String delGroupe = "DELETE FROM groupe WHERE IDforme = ?";
             try {
                 conect = DriverManager.getConnection("jdbc:"
                         + "derby:BDD;create=true");
                 PreparedStatement prep = conect.prepareStatement(del);
                 PreparedStatement prepName = conect.prepareStatement(delName);
+                PreparedStatement prepdelGP =
+                        conect.prepareStatement(delGroupe);
+                prepdelGP.setString(1, obj.getID());
                 prep.setString(1, obj.getID());
                 prepName.setString(1, obj.getID());
-                prep.executeUpdate();
+                prepdelGP.executeUpdate();
                 prepName.executeUpdate();
+                prep.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {

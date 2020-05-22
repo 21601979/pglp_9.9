@@ -1,4 +1,4 @@
-package fr.uvsq._9;
+package forme;
 
 /**
  * class carrée.
@@ -23,8 +23,9 @@ public class Carre implements Forme {
      * constructeur de la class carrée.
      * @param setp point de référence du carrée
      * @param setsize taille du carrée
+     * @param name nom du carrée
      */
-    public Carre(final Point setp, final int setsize, String name) {
+    public Carre(final Point setp, final int setsize, final String name) {
         p = setp;
         size = setsize;
         iD = name;

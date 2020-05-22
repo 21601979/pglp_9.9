@@ -1,4 +1,4 @@
-package fr.uvsq._9;
+package forme;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,12 +12,16 @@ public class Groupe implements Forme {
      * liste de forme.
      */
     private ArrayList<Forme> l = new ArrayList<Forme>();
+    /**
+     * id d'un groupe de forme.
+     */
     private String id;
 
     /**
      * constructeur d'un groupe de forme.
+     * @param name nom groupe
      */
-    public Groupe(String name) {
+    public Groupe(final String name) {
         id = name;
     }
 
@@ -52,11 +56,17 @@ public class Groupe implements Forme {
         }
         return res;
     }
-
+    /**
+     * methode qui renvoie l'iD du groupe.
+     * @return id d'un groupe
+     */
     public String getID() {
         return id;
     }
-
+    /**
+     * methode qui renvoie un itérateur pour un groupe de forme.
+     * @return iterateur d'un groupe
+     */
     public Iterator<Forme> getIterator() {
         return l.iterator();
     }

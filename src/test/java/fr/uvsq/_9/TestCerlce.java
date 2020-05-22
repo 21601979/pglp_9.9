@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import forme.Cercle;
+import forme.Point;
+
 public class TestCerlce {
 
     @Test

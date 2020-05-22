@@ -1,4 +1,7 @@
-package fr.uvsq._9;
+package dao;
+
+import fr.uvsq._9.ExisteDejaException;
+import fr.uvsq._9.ExistePasException;
 
 /**
  * factory de DAO.

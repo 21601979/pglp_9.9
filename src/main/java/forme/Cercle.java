@@ -1,4 +1,5 @@
-package fr.uvsq._9;
+package forme;
+
 /**
  * class cercle.
  * @author Tanguy
@@ -23,6 +24,7 @@ public class Cercle implements Forme {
      * constructeur de la class cercle.
      * @param midle point du centre
      * @param size rayon du cercle
+     * @param name nom du cercle
      */
     public Cercle(final Point midle, final int size, final String name) {
         centre = midle;
@@ -45,15 +47,24 @@ public class Cercle implements Forme {
     public String toString() {
         return "Cercle " + centre.toString() + " " + rayon;
     }
-
+    /**
+     * methode qui renvoie l'id d'un cercle.
+     * @return id du cercle
+     */
     public String getID() {
         return iD;
     }
-
+    /**
+     * methode pour obtenir le point centrale du cercle.
+     * @return point centrale du cercle
+     */
     public Point getCentre() {
         return centre;
     }
-
+    /**
+     * methode pour obtenir le rayon d'un cercle.
+     * @return rayon du cercle
+     */
     public int getRayon() {
         return rayon;
     }

@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import forme.Point;
+import forme.Rectangle;
+
 public class TestRectangle {
     
     @Test

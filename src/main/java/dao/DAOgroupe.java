@@ -1,4 +1,4 @@
-package fr.uvsq._9;
+package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,16 +7,27 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
-public class DAOgroupe extends DAO<Groupe>{
-
+import forme.Forme;
+import forme.Groupe;
+import fr.uvsq._9.ExisteDejaException;
+import fr.uvsq._9.ExistePasException;
+/**
+ * DAO pour les groupe de forme.
+ * @author Tanguy
+ *
+ */
+public class DAOgroupe extends DAO<Groupe> {
+    /**
+     * methode qui crée un groupe dans la base de données.
+     */
     @Override
-    public void create(Groupe obj) throws ExisteDejaException {
+    public void create(final Groupe obj) throws ExisteDejaException {
         Connection conect = null;
         String addGroupe = "INSERT INTO Groupe"
                 + "(IDgroupe,IDforme,type)"
                 + "VALUES(?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name(ID,type) VALUES(?,'groupe')";;
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'groupe')";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
@@ -32,18 +43,23 @@ public class DAOgroupe extends DAO<Groupe>{
                     conect.prepareStatement(addGroupe);
             Iterator<Forme> it = obj.getIterator();
             prepcreate.setString(1, obj.getID());
-            while(it.hasNext()) {
+            while (it.hasNext()) {
                 Forme temp = (Forme) it.next();
                 prepcreate.setString(2, temp.getID());
-                prepcreate.setString(3, temp.getClass().getSimpleName());
+                final int trois = 3;
+                prepcreate.setString(trois, temp.getClass().getSimpleName());
                 prepcreate.executeUpdate();
             }
-            PreparedStatement prepName = 
+            PreparedStatement prepName =
                     conect.prepareStatement(addName);
             prepName.setString(1, obj.getID());
             System.out.println("le groupe est enregistré avec le nom: "
                     + obj.getID());
-            
+
+            prepsearch.close();
+            prepcreate.close();
+            prepName.close();
+            conect.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -54,37 +70,37 @@ public class DAOgroupe extends DAO<Groupe>{
             }
         }
     }
-    
-    private Forme addForme(ResultSet result) {
+    /**
+     * methode qui ajoute un forme du groupe dans la BD.
+     * @param result resultat de la requette
+     * @return retourne la forme ajoutée
+     */
+    private Forme addForme(final ResultSet result) {
         try {
             DAO dao = null;
             System.out.println(result.getString("type"));
-            if(result.getString("type").equals("Triangle")) {
+            if (result.getString("type").equals("Triangle")) {
                 dao = new DAOtriangle();
-            }
-            else if(result.getString("type").equals("Carre")) {
+            } else if (result.getString("type").equals("Carre")) {
                 dao = new DAOcarre();
-            }
-            else if(result.getString("type").equals("Rectangle")) {
+            } else if (result.getString("type").equals("Rectangle")) {
                 dao = new DAOrectangle();
-            }
-            else if(result.getString("type").equals("Cercle")) {
+            } else if (result.getString("type").equals("Cercle")) {
                 dao = new DAOcercle();
-            }
-            else if(result.getString("type").equals("Groupe")) {
+            } else if (result.getString("type").equals("Groupe")) {
                 dao = new DAOgroupe();
             }
-            System.out.println("m " +dao);
+            System.out.println("m " + dao);
             return (Forme) dao.find(result.getString("IDforme"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        } catch (SQLException e) { }
         return null;
     }
-    
 
+    /**
+     * methode qui trouve un groupe dans la BD.
+     */
     @Override
-    public Groupe find(String iD) {
+    public Groupe find(final String iD) {
         Connection conect = null;
         String searchGroupe = "SELECT * FROM Groupe WHERE IDgroupe = ?";
         try {
@@ -95,8 +111,9 @@ public class DAOgroupe extends DAO<Groupe>{
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
             Groupe res = new Groupe(iD);
+            conect.commit();
             res.add(addForme(result));
-            while(result.next()) {
+            while (result.next()) {
                 res.add(addForme(result));
             }
             return res;
@@ -112,9 +129,11 @@ public class DAOgroupe extends DAO<Groupe>{
         }
         return null;
     }
-
+    /**
+     * methode qui suprime un groupe.
+     */
     @Override
-    public void delete(Groupe obj) throws ExistePasException {
+    public void delete(final Groupe obj) throws ExistePasException {
         Connection conect = null;
         if (find(obj.getID() + "") != null) {
             String del = "DELETE FROM Groupe WHERE IDgroupe = ?";
@@ -127,6 +146,7 @@ public class DAOgroupe extends DAO<Groupe>{
                 prep.setString(1, obj.getID());
                 prepName.setString(1, obj.getID());
                 prep.executeUpdate();
+                conect.commit();
                 prepName.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -141,9 +161,11 @@ public class DAOgroupe extends DAO<Groupe>{
             throw new ExistePasException();
         }
     }
-
+    /**
+     * methode qui update un groupe.
+     */
     @Override
-    public Groupe update(Groupe obj) throws ExistePasException {
+    public Groupe update(final Groupe obj) throws ExistePasException {
         if (find(obj.getID() + "") != null) {
             delete(obj);
             try {

@@ -1,4 +1,4 @@
-package fr.uvsq._9;
+package forme;
 
 /**
  * class point.

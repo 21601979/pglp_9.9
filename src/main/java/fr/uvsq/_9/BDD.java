@@ -49,12 +49,12 @@ public abstract class BDD {
             + "ID varchar(30),"
             + "PRIMARY KEY(ID)"
             + ")";
-            String Name = "CREATE TABLE Name("
+            String name = "CREATE TABLE Name("
                     + "ID varchar(30),"
                     + "type varchar(30),"
                     + "PRIMARY KEY(ID)"
                     + ")";
-            String Groupe = "CREATE TABLE Groupe("
+            String groupe = "CREATE TABLE Groupe("
                     + "IDgroupe varchar(30),"
                     + "IDforme varchar(30),"
                     + "type varchar(30),"
@@ -84,12 +84,12 @@ public abstract class BDD {
                 e.printStackTrace();
                 }
             try {
-                stmt.execute(Name);
+                stmt.execute(name);
             } catch (SQLException e) {
                 e.printStackTrace();
                 }
             try {
-                stmt.execute(Groupe);
+                stmt.execute(groupe);
             } catch (SQLException e) {
                 e.printStackTrace();
                 }

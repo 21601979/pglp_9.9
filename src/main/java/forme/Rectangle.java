@@ -1,4 +1,5 @@
-package fr.uvsq._9;
+package forme;
+
 /**
  * class rectangle.
  * @author Tanguy

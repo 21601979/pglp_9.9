@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import forme.Carre;
+import forme.Point;
+
 public class TestCarre {
     @Test
     public void Testcarre() {
