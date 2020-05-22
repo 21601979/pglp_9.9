@@ -16,7 +16,7 @@ public class DAOgroupe extends DAO<Groupe>{
                 + "(IDgroupe,IDforme,type)"
                 + "VALUES(?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name VALUES(?)";
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'groupe')";;
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");

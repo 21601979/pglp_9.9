@@ -20,7 +20,7 @@ public class DAOcarre extends DAO<Carre> {
                 + "(x,y,taille,ID)"
                 + "VALUES(?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name VALUES(?)";
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'carre')";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");

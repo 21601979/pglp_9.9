@@ -51,6 +51,7 @@ public abstract class BDD {
             + ")";
             String Name = "CREATE TABLE Name("
                     + "ID varchar(30),"
+                    + "type varchar(30),"
                     + "PRIMARY KEY(ID)"
                     + ")";
             String Groupe = "CREATE TABLE Groupe("

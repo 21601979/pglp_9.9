@@ -23,7 +23,7 @@ public class DAOrectangle extends DAO<Rectangle> {
                 + "(x,y,longueur,hauteur,ID)"
                 + "VALUES(?,?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name VALUES(?)";
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'rectangle')";;
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");

@@ -22,7 +22,7 @@ public class DAOcercle extends DAO<Cercle> {
                 + "(x,y,rayon,ID)"
                 + "VALUES(?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name VALUES(?)";
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'cercle')";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");

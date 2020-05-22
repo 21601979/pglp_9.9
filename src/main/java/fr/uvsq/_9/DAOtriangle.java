@@ -21,7 +21,7 @@ public class DAOtriangle extends DAO<Triangle> {
                 + "(x1,y1,x2,y2,x3,y3,ID)"
                 + "VALUES(?,?,?,?,?,?,?)";
         String searchID = "SELECT ID FROM Name WHERE ID = ?";
-        String addName = "INSERT INTO Name VALUES(?)";
+        String addName = "INSERT INTO Name(ID,type) VALUES(?,'triangle')";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
