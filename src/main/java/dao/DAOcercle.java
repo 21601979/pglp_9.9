@@ -68,11 +68,12 @@ public class DAOcercle extends DAO<Cercle> {
     @Override
     public Cercle find(final String iD) {
         Connection conect = null;
-        String searchCercle = "SELECT * FROM Cercle WHERE ID = iD";
+        String searchCercle = "SELECT * FROM Cercle WHERE ID = ?";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
         PreparedStatement prepsearch = conect.prepareStatement(searchCercle);
+        prepsearch.setString(1, iD);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
             Cercle res = new Cercle(new Point(result.getInt("x"),

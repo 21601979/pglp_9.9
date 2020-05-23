@@ -49,7 +49,7 @@ public class Rectangle implements Forme {
     */
    @Override
    public String toString() {
-       return "Rectangle " + p.toString() + " " + sizeX + " " + sizeY;
+       return "Rectangle " + iD + " " + p.toString() + " " + sizeX + " " + sizeY;
    }
    /**
     * methode qui renvoi l'id d'un rectangle.

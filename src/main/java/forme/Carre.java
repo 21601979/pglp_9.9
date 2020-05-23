@@ -44,7 +44,7 @@ public class Carre implements Forme {
      */
     @Override
     public String toString() {
-        return "Carre " + p.toString() + " " + size;
+        return "Carre " + iD + " " + p.toString() + " " + size;
     }
     /**
      * methode qui renvoi p.

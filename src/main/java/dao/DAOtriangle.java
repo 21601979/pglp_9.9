@@ -73,11 +73,12 @@ public class DAOtriangle extends DAO<Triangle> {
     @Override
     public Triangle find(final String iD) {
         Connection conect = null;
-        String searchtriangle = "SELECT * FROM Triangle WHERE ID = iD";
+        String searchtriangle = "SELECT * FROM Triangle WHERE ID = ?";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
         PreparedStatement prepsearch = conect.prepareStatement(searchtriangle);
+        prepsearch.setString(1, iD);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
             Triangle res = new Triangle(

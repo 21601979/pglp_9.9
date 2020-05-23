@@ -54,7 +54,7 @@ public class Triangle implements Forme {
      */
     @Override
     public String toString() {
-        return "Triangle " + p1.toString()
+        return "Triangle " + iD + " " + p1.toString()
         + " " + p2.toString() + " " + p3.toString();
     }
 

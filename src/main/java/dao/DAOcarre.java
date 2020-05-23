@@ -67,11 +67,12 @@ public class DAOcarre extends DAO<Carre> {
     @Override
     public Carre find(final String iD) {
         Connection conect = null;
-        String searchCarre = "SELECT * FROM Carre WHERE ID = iD";
+        String searchCarre = "SELECT * FROM Carre WHERE ID = ?";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
         PreparedStatement prepsearch = conect.prepareStatement(searchCarre);
+        prepsearch.setString(1, iD);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
             Carre res = new Carre(new Point(result.getInt("x"),

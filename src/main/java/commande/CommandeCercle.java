@@ -3,6 +3,7 @@ package commande;
 import dao.DAO;
 import dao.DAOFactory;
 import forme.Cercle;
+import forme.Point;
 import fr.uvsq._9.ExisteDejaException;
 import fr.uvsq._9.ListeForme;
 
@@ -22,11 +23,14 @@ public class CommandeCercle implements Commande {
     private ListeForme lObj;
     /**
      * constructeur de la commande pour créer un cercle.
-     * @param c cercle a créer
+     * @param x coordonée x
+     * @param y coordonée y
+     * @param rayon rayon du cercle
+     * @ nom du cercle
      * @param l liste de forme
      */
-    public CommandeCercle(final Cercle c, final ListeForme l) {
-        obj = c;
+    public CommandeCercle(int x, int y, int rayon, String nom, ListeForme l) {
+        obj = new Cercle(new Point(x, y), rayon, nom);
         lObj = l;
     }
     /**

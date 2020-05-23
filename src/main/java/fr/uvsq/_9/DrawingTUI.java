@@ -10,10 +10,14 @@ import commande.Commande;
 import commande.CommandeCarre;
 import commande.CommandeCercle;
 import commande.CommandeDelete;
+import commande.CommandeDraw;
 import commande.CommandeException;
+import commande.CommandeExit;
 import commande.CommandeGroupe;
+import commande.CommandeLoad;
 import commande.CommandeMove;
 import commande.CommandeRectangle;
+import commande.CommandeSave;
 import commande.CommandeTriangle;
 import dao.DAO;
 import dao.DAOFactory;
@@ -35,55 +39,84 @@ public class DrawingTUI {
      * @param ut string analysé
      * @param l liste de forme
      * @return une commande
+     * @throws CommandeException 
      */
-    public Commande nextCommand(final String ut, final ListeForme l) {
+    public Commande nextCommand(final String ut, final ListeForme l)
+            throws CommandeException {
         String comm = ut.replace(" ", "");
-        try {
-            if (comm.indexOf("=") != -1) { //création d'une forme
-                int eql = comm.indexOf("=");
-                final int trente = 30;
-                if (eql >= trente) {
-                    System.out.println("le nom est trop long");
-                    throw new CommandeException();
+        if (comm.indexOf("=") != -1) { //création d'une forme
+            int eql = comm.indexOf("=");
+            final int trente = 30;
+            if (eql >= trente) {
+                System.out.println("le nom est trop long");
+                throw new CommandeException();
+            } else {
+                String nom = comm.split("=")[0];
+                String temp = comm.split("=")[1];
+                String type = temp.split("\\(")[0];
+                temp = temp.replace(type, "");
+                temp = temp.replace("(", "");
+                temp = temp.replace(")", "");
+                if (type.toUpperCase().equals("CARRE")) {
+                    return carre(temp, nom, l);
+                } else if (type.toUpperCase().equals("CERCLE")) {
+                    return cercle(temp, nom, l);
+                } else if (type.toUpperCase().equals("RECTANGLE")) {
+                    return rectangle(temp, nom, l);
+                } else if (type.toUpperCase().equals("TRIANGLE")) {
+                    return triangle(temp, nom, l);
+                } else if (type.toUpperCase().equals("GROUPE")) {
+                    return groupe(temp, nom, l);
                 } else {
-                    String nom = comm.split("=")[0];
-                    String temp = comm.split("=")[1];
-                    String type = temp.split("\\(")[0];
-                    temp = temp.replace(type, "");
-                    temp = temp.replace("(", "");
-                    temp = temp.replace(")", "");
-                    if (type.toUpperCase().equals("CARRE")) {
-                        return carre(temp, nom, l);
-                    } else if (type.toUpperCase().equals("CERCLE")) {
-                        return cercle(temp, nom, l);
-                    } else if (type.toUpperCase().equals("RECTANGLE")) {
-                        return rectangle(temp, nom, l);
-                    } else if (type.toUpperCase().equals("TRIANGLE")) {
-                        return triangle(temp, nom, l);
-                    } else if (type.toUpperCase().equals("GROUPE")) {
-                        return groupe(temp, nom, l);
-                    } else {
-                        System.out.println(type + "n'est pas une forme valide");
-                        throw new CommandeException();
-                    }
+                    System.out.println(type + "n'est pas une forme valide");
+                    throw new CommandeException();
                 }
             }
-            String function = comm.split("\\(")[0];
-            System.out.println(function);
-            String temp = comm.replace(function, "");
-            temp = temp.replace("(", "");
-            temp = temp.replace(")", "");
-            System.out.println(temp);
-            if (function.toUpperCase().equals("MOVE")) {
-                return moove(temp, l);
-            } else if (function.toUpperCase().equals("DELETE")) {
-                return delete(temp, l);
-            } else {
-                System.out.println(function + "n'est pas une fonction valide");
-                throw new CommandeException();
-            }
-        } catch (Exception e) { }
-        return null;
+        }
+        String function = comm.split("\\(")[0];
+        //System.out.println(function);
+        String temp = comm.replace(function, "");
+        temp = temp.replace("(", "");
+        temp = temp.replace(")", "");
+        System.out.println(temp);
+        if (function.toUpperCase().equals("MOVE")) {
+            return moove(temp, l);
+        } else if (function.toUpperCase().equals("DELETE")) {
+            return delete(temp, l);
+        } else if (function.toUpperCase().equals("DRAW")) {
+            return new CommandeDraw(l);
+        } else if (function.toUpperCase().equals("EXIT")) {
+            return new CommandeExit(l);
+        } else if (function.toUpperCase().equals("LOAD")) {
+            return load(temp, l);
+        } else if (function.toUpperCase().equals("SAVE")) {
+            return save(temp, l);
+        } else {
+            System.out.println(function + "n'est pas une fonction valide");
+            throw new CommandeException();
+        }
+    }
+    
+    private Commande save(final String temp, final ListeForme l) 
+            throws CommandeException {
+        String[] res;
+        res = temp.split(",");
+        if (res[0].equals("")) {
+            System.out.println("le nombre d'argument n'est pas le bon");
+            throw new CommandeException();
+        }
+        return new CommandeSave(temp,l);
+    }
+    
+    private Commande load(final String temp, final ListeForme l)
+            throws CommandeException {
+        String[] res;
+        res = temp.split(",");
+        if (res.length != 1) {
+            System.out.println("le nombre d'argument n'est pas le bon");
+            throw new CommandeException();
+        }
+        return new CommandeLoad(temp,l);
     }
     /**
      * methode qui renvoie une commande de supression.
@@ -100,7 +133,7 @@ public class DrawingTUI {
             System.out.println("le nombre d'argument n'est pas le bon");
             throw new CommandeException();
         }
-        return new CommandeDelete(res[0]);
+        return new CommandeDelete(res[0],l);
     }
     /**
      * methode qui vérifie q'un int est contenu dans le string.
@@ -150,51 +183,11 @@ public class DrawingTUI {
             final ListeForme l) throws CommandeException {
         String[] res;
         res = temp.split(",");
-        if (res.length < 1) {
+        if (res[0].equals("")) {
             System.out.println("le nombre d'argument n'est pas le bon");
             throw new CommandeException();
         }
-        int i;
-        Groupe g = new Groupe(nom);
-        try {
-            Connection conect = DriverManager.getConnection("jdbc:"
-                    + "derby:BDD;create=true");
-            String getType = "SELECT type FROM Name WHERE ID = ?";
-            PreparedStatement prepType = conect.prepareStatement(getType);
-            for (i = 0; i < res.length; i++) {
-                prepType.setString(1, res[i]);
-                ResultSet result = prepType.executeQuery();
-                if (result.next()) {
-                    String type = result.getString("type");
-                    if (type.equals("carre")) {
-                        DAO<Carre> d = DAOFactory.getDAOcarre();
-                        g.add((Forme) d.find(res[i]));
-                    }
-                    if (type.equals("cercle")) {
-                        DAO<Cercle> d = DAOFactory.getDAOcercle();
-                        g.add((Forme) d.find(res[i]));
-                    }
-                    if (type.equals("rectangle")) {
-                        DAO<Rectangle> d = DAOFactory.getDAOrectangle();
-                        g.add((Forme) d.find(res[i]));
-                    }
-                    if (type.equals("triangle")) {
-                        DAO<Triangle> d = DAOFactory.getDAOtriangle();
-                        g.add((Forme) d.find(res[i]));
-                    }
-                    if (type.equals("groupe")) {
-                        DAO<Groupe> d = DAOFactory.getDAOgroupe();
-                        g.add((Forme) d.find(res[i]));
-                    }
-                }
-            }
-            conect.close();
-            //System.out.println(g.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        Commande c = new CommandeGroupe(g, l);
-        return c;
+        return new CommandeGroupe(nom, res, l);
 
     }
     /**
@@ -223,9 +216,7 @@ public class DrawingTUI {
         int y2 = estInt(res[trois]);
         int x3 = estInt(res[quatre]);
         int y3 = estInt(res[cinq]);
-        Triangle t = new Triangle(new Point(x1, y1), new Point(x2, y2),
-                new Point(x3, y3), nom);
-        return new CommandeTriangle(t, l);
+        return new CommandeTriangle(x1, y1, x2, y2, x3, y3, nom, l);
     }
 
     /**
@@ -251,7 +242,7 @@ public class DrawingTUI {
         int lon = estInt(res[2]);
         int lar = estInt(res[trois]);
         Rectangle r = new Rectangle(new Point(x, y), lon, lar, nom);
-        return new CommandeRectangle(r, l);
+        return new CommandeRectangle(x, y, lon, lar, nom, l);
     }
     /**
      * methode qui renvoi une commande de création d'un cercle.
@@ -273,8 +264,7 @@ public class DrawingTUI {
         int x = estInt(res[0]);
         int y = estInt(res[1]);
         int rayon = estInt(res[2]);
-        Cercle c = new Cercle(new Point(x, y), rayon, nom);
-        return new CommandeCercle(c, l);
+        return new CommandeCercle(x, y, rayon, nom, l);
     }
     /**
      * methode qui renvoie une Commande de création d'un carrée.
@@ -296,7 +286,6 @@ public class DrawingTUI {
         int x = estInt(res[0]);
         int y = estInt(res[1]);
         int size = estInt(res[2]);
-        Carre c = new Carre(new Point(x, y), size, nom);
-        return new CommandeCarre(c, l);
+        return new CommandeCarre(x, y, size, nom, l);
     }
 }

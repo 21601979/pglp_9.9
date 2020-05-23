@@ -45,7 +45,7 @@ public class Cercle implements Forme {
      */
     @Override
     public String toString() {
-        return "Cercle " + centre.toString() + " " + rayon;
+        return "Cercle " + iD + " " + centre.toString() + " " + rayon;
     }
     /**
      * methode qui renvoie l'id d'un cercle.

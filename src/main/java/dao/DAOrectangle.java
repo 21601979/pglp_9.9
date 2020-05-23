@@ -71,11 +71,12 @@ public class DAOrectangle extends DAO<Rectangle> {
     @Override
     public Rectangle find(final String iD) {
         Connection conect = null;
-        String searchRectangle = "SELECT * FROM Rectangle WHERE ID = iD";
+        String searchRectangle = "SELECT * FROM Rectangle WHERE ID = ?";
         try {
             conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
         PreparedStatement prepsearch = conect.prepareStatement(searchRectangle);
+        prepsearch.setString(1, iD);
         ResultSet result = prepsearch.executeQuery();
         if (result.next()) {
             Rectangle res = new Rectangle(new Point(result.getInt("x"),

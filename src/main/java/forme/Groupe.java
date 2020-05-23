@@ -52,7 +52,7 @@ public class Groupe implements Forme {
         String res = "";
         Iterator<Forme> i = l.iterator();
         while (i.hasNext()) {
-            res = res + "( " + i.next().toString() + " )";
+            res = res + "groupe " + id + " " + "( " + i.next().toString() + " )";
         }
         return res;
     }

@@ -45,6 +45,7 @@ public class DAOgroupe extends DAO<Groupe> {
             prepcreate.setString(1, obj.getID());
             while (it.hasNext()) {
                 Forme temp = (Forme) it.next();
+                System.out.println(temp.getID());
                 prepcreate.setString(2, temp.getID());
                 final int trois = 3;
                 prepcreate.setString(trois, temp.getClass().getSimpleName());
@@ -53,6 +54,7 @@ public class DAOgroupe extends DAO<Groupe> {
             PreparedStatement prepName =
                     conect.prepareStatement(addName);
             prepName.setString(1, obj.getID());
+            prepName.executeUpdate();
             System.out.println("le groupe est enregistré avec le nom: "
                     + obj.getID());
 

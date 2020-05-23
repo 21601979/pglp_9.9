@@ -10,76 +10,64 @@ import dao.DAO;
 import dao.DAOFactory;
 import forme.Carre;
 import forme.Cercle;
+import forme.Forme;
 import forme.Groupe;
 import forme.Rectangle;
 import forme.Triangle;
-import fr.uvsq._9.ExistePasException;
 import fr.uvsq._9.ListeForme;
-/**
- * commande pour supprimer une forme.
- * @author Tanguy
- *
- */
-public class CommandeDelete implements Commande {
-    /**
-     * identifiant de la forme a supprimer.
-     */
-    private String iD;
-    private ListeForme l;
-    /**
-     * constructeur de la commande pour suprimer un objet.
-     * @param name nom de la forme a supprimer
-     */
-    public CommandeDelete(final String name, final ListeForme lis) {
+
+public class CommandeLoad implements Commande {
+
+    String objLoad;
+    ListeForme l;
+    public CommandeLoad(final String temp, final ListeForme lis) {
+        objLoad = temp;
         l = lis;
-        iD = name;
     }
-    /**
-     * methode qui suprime un objet de la base de données.
-     */
     public void execute() {
+       
+        Connection conect;
         try {
-            Connection conect = DriverManager.getConnection("jdbc:"
+            conect = DriverManager.getConnection("jdbc:"
                     + "derby:BDD;create=true");
             String getType = "SELECT type FROM Name WHERE ID = ?";
             PreparedStatement prepType = conect.prepareStatement(getType);
-            prepType.setString(1, iD);
+            prepType.setString(1, objLoad);
             ResultSet result = prepType.executeQuery();
-            if(l.search(iD) == null) {
-                System.out.println("la forme n'existe pas dans le dessin");
+            if(l.search(objLoad) != null) {
+            System.out.println("la forme est déja présente dans le dessin");
             }
             if (result.next()) {
                 String type = result.getString("type");
                 conect.close();
                 result.close();
+                Forme c;
                 if (type.equals("carre")) {
                     DAO<Carre> d = DAOFactory.getDAOcarre();
-                    Carre c = d.find(iD);
-                    d.delete(c);
+                    c = d.find(objLoad);
+                    l.add(c);
                 } else if (type.equals("cercle")) {
                     DAO<Cercle> d = DAOFactory.getDAOcercle();
-                    Cercle c = d.find(iD);
-                    d.delete(c);
+                    c = d.find(objLoad);
+                    l.add(c);
                 } else if (type.equals("rectangle")) {
                     DAO<Rectangle> d = DAOFactory.getDAOrectangle();
-                    Rectangle c = d.find(iD);
-                    d.delete(c);
+                    c = d.find(objLoad);
+                    l.add(c);
                 } else if (type.equals("triangle")) {
                     DAO<Triangle> d = DAOFactory.getDAOtriangle();
-                    Triangle c = d.find(iD);
-                    d.delete(c);
+                    c = d.find(objLoad);
+                    l.add(c);
                 } else if (type.equals("groupe")) {
                     DAO<Groupe> d = DAOFactory.getDAOgroupe();
-                    Groupe c = d.find(iD);
-                    d.delete(c);
+                    c = d.find(objLoad);
+                    l.add(c);
                 }
-                l.supp(iD);
             }
+            else {System.out.println("la forme " + objLoad + " n'existe pas"
+                    + " dans la BD");}
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ExistePasException e) {
             e.printStackTrace();
         }
     }
-
 }

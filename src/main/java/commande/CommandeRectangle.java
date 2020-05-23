@@ -2,6 +2,7 @@ package commande;
 
 import dao.DAO;
 import dao.DAOFactory;
+import forme.Point;
 import forme.Rectangle;
 import fr.uvsq._9.ExisteDejaException;
 import fr.uvsq._9.ListeForme;
@@ -22,12 +23,15 @@ public class CommandeRectangle implements Commande {
     private ListeForme lObj;
     /**
      * constructeur de la commande rectangle.
-     * @param r rectangle a créer
+     * @param x coordonnée x
+     * @param y coordonnée y
+     * @param lon longueur du rectangle
+     * @param lar largeur du rectangle
+     * @param nom nom du rectangle
      * @param l liste de forme
      */
-    public CommandeRectangle(final Rectangle r, final ListeForme l) {
-        obj = r;
-        lObj = l;
+    public CommandeRectangle(int x, int y, int lon, int lar, String nom, ListeForme l) {
+        obj = new Rectangle(new Point(x, y), lon, lar, nom);
     }
     /**
      * methode qui créer un rectangle.

@@ -3,6 +3,7 @@ package commande;
 import dao.DAO;
 import dao.DAOFactory;
 import forme.Carre;
+import forme.Point;
 import fr.uvsq._9.ExisteDejaException;
 import fr.uvsq._9.ListeForme;
 
@@ -22,11 +23,15 @@ public class CommandeCarre implements Commande {
     private ListeForme lObj;
     /**
      * constructeur de la commande pour créer un carre.
-     * @param c carée à créer
+     * @param x coordonée x
+     * @param y coordonée y
+     * @param size taille du carré
+     * @param nom nom du carré
      * @param l liste de forme
      */
-    public CommandeCarre(final Carre c, final ListeForme l) {
-        obj = c;
+    public CommandeCarre(final int x, final int y, final int size,
+            final String nom, final ListeForme l) {
+        obj = new Carre(new Point(x ,y), size, nom);
         lObj = l;
     }
     /**
