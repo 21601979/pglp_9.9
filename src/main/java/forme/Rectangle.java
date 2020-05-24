@@ -42,14 +42,15 @@ public class Rectangle implements Forme {
     * @param depl qui sert pour le déplacement
     */
    public void deplace(final Point depl) {
-      p = depl;
+       p = new Point(p.getX() + depl.getX(), p.getY() + depl.getY());
    }
    /**
     * methode qui renvoi un string décrivant un rectangle.
     */
    @Override
    public String toString() {
-       return "Rectangle " + iD + " " + p.toString() + " " + sizeX + " " + sizeY;
+       return "Rectangle " + iD + " " + p.toString() + " " + sizeX
+               + " " + sizeY;
    }
    /**
     * methode qui renvoi l'id d'un rectangle.

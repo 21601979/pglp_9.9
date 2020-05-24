@@ -30,7 +30,8 @@ public class CommandeRectangle implements Commande {
      * @param nom nom du rectangle
      * @param l liste de forme
      */
-    public CommandeRectangle(int x, int y, int lon, int lar, String nom, ListeForme l) {
+    public CommandeRectangle(final int x, final int y, final int lon,
+            final int lar, final String nom, final ListeForme l) {
         obj = new Rectangle(new Point(x, y), lon, lar, nom);
     }
     /**

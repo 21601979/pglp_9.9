@@ -11,7 +11,11 @@ import forme.Triangle;
  * @author Tanguy
  *
  */
-public class DAOFactory {
+public final class DAOFactory {
+    /**
+     * constructeur de la class DAO factory.
+     */
+    private DAOFactory() { }
     /**
      * methode qui renvoi un DAO carree.
      * @return DAOcarre

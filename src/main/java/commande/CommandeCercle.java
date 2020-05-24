@@ -26,10 +26,11 @@ public class CommandeCercle implements Commande {
      * @param x coordonée x
      * @param y coordonée y
      * @param rayon rayon du cercle
-     * @ nom du cercle
+     * @param nom du cercle
      * @param l liste de forme
      */
-    public CommandeCercle(int x, int y, int rayon, String nom, ListeForme l) {
+    public CommandeCercle(final int x, final int y, final int rayon,
+            final String nom, final ListeForme l) {
         obj = new Cercle(new Point(x, y), rayon, nom);
         lObj = l;
     }

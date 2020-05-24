@@ -18,7 +18,7 @@ public class GroupeTest {
         Groupe g = new Groupe("a");
         g.add(r);
         g.add(c);
-        assertEquals(g.toString(),"( Carre (1,1) 10 )( Cercle (1,1) 10 )");
+        assertEquals(g.toString(),"groupe a ( Carre 1 (1,1) 10 ) ( Cercle 1 (1,1) 10 )");
     }
     
     @Test
@@ -29,6 +29,6 @@ public class GroupeTest {
         g.add(r);
         g.add(c);
         g.deplace(new Point(10,10));
-        assertEquals(g.toString(),"( Carre (10,10) 10 )( Cercle (10,10) 10 )");
+        assertEquals(g.toString(),"groupe a ( Carre 1 (11,11) 10 ) ( Cercle 1 (11,11) 10 )");
     }
 }

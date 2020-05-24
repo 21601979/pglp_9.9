@@ -47,8 +47,6 @@ public class DAOcarre extends DAO<Carre> {
             prep.setInt(trois, obj.getSize());
             prep.setString(quatre, obj.getID());
             prep.executeUpdate();
-            System.out.println("le carré est enregistré avec l'ID "
-            + obj.getID());
             prepName.close();
             prep.close();
         } catch (SQLException e) {
@@ -126,7 +124,6 @@ public class DAOcarre extends DAO<Carre> {
         } else {
             throw new ExistePasException();
         }
-        System.out.println("le carre " + obj.getID() + "à été supprimé");
     }
     /**
      * methode qui update un carre.

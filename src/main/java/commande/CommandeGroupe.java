@@ -33,7 +33,8 @@ public class CommandeGroupe  implements Commande {
     private ListeForme lObj;
     /**
      * constructeur de la commande pour crée un groupe.
-     * @param g groupe a créer.
+     * @param nom nom du groupe
+     * @param res string contenant les élléments du groupe
      * @param l liste de forme
      */
     public CommandeGroupe(final String nom, final String[] res,
@@ -48,7 +49,6 @@ public class CommandeGroupe  implements Commande {
             PreparedStatement prepType = conect.prepareStatement(getType);
             for (i = 0; i < res.length; i++) {
                 prepType.setString(1, res[i]);
-                System.out.println("res "+res[i]);
                 ResultSet result = prepType.executeQuery();
                 if (result.next()) {
                     String type = result.getString("type");
@@ -74,7 +74,7 @@ public class CommandeGroupe  implements Commande {
                     }
                 }
             }
-            if(conect != null) {
+            if (conect != null) {
                 conect.close();
             }
 
@@ -88,7 +88,6 @@ public class CommandeGroupe  implements Commande {
     public void execute() {
         DAO<Groupe> d = DAOFactory.getDAOgroupe();
         try {
-            System.out.println("okokokok");
             d.create(obj);
             lObj.add(obj);
         } catch (ExisteDejaException e) {

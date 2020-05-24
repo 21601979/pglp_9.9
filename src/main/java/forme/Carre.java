@@ -36,13 +36,13 @@ public class Carre implements Forme {
      * @param depl point qui permet le deplacement d'un carré.
      */
     public void deplace(final Point depl) {
-       p = depl;
+        p = new Point(p.getX() + depl.getX(), p.getY() + depl.getY());
     }
 
     /**
-     * metode qui renvoi le strijng représentant un carrée.
+     * metode qui renvoi le string représentant un carrée.
+     * @return String qui représente un cercle
      */
-    @Override
     public String toString() {
         return "Carre " + iD + " " + p.toString() + " " + size;
     }

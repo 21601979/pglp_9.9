@@ -1,11 +1,5 @@
 package fr.uvsq._9;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import commande.Commande;
 import commande.CommandeCarre;
 import commande.CommandeCercle;
@@ -19,15 +13,7 @@ import commande.CommandeMove;
 import commande.CommandeRectangle;
 import commande.CommandeSave;
 import commande.CommandeTriangle;
-import dao.DAO;
-import dao.DAOFactory;
-import forme.Carre;
-import forme.Cercle;
-import forme.Forme;
-import forme.Groupe;
 import forme.Point;
-import forme.Rectangle;
-import forme.Triangle;
 /**
  * class qui gère les entrée utilisateur.
  * @author Tanguy
@@ -39,7 +25,7 @@ public class DrawingTUI {
      * @param ut string analysé
      * @param l liste de forme
      * @return une commande
-     * @throws CommandeException 
+     * @throws CommandeException envoyé si il y a une érreur dans la commande
      */
     public Commande nextCommand(final String ut, final ListeForme l)
             throws CommandeException {
@@ -48,8 +34,7 @@ public class DrawingTUI {
             int eql = comm.indexOf("=");
             final int trente = 30;
             if (eql >= trente) {
-                System.out.println("le nom est trop long");
-                throw new CommandeException();
+                throw new CommandeException("le nom est trop long");
             } else {
                 String nom = comm.split("=")[0];
                 String temp = comm.split("=")[1];
@@ -68,17 +53,15 @@ public class DrawingTUI {
                 } else if (type.toUpperCase().equals("GROUPE")) {
                     return groupe(temp, nom, l);
                 } else {
-                    System.out.println(type + "n'est pas une forme valide");
-                    throw new CommandeException();
+                    throw new CommandeException(type + " n'est pas"
+                            + " une forme valide");
                 }
             }
         }
         String function = comm.split("\\(")[0];
-        //System.out.println(function);
         String temp = comm.replace(function, "");
         temp = temp.replace("(", "");
         temp = temp.replace(")", "");
-        System.out.println(temp);
         if (function.toUpperCase().equals("MOVE")) {
             return moove(temp, l);
         } else if (function.toUpperCase().equals("DELETE")) {
@@ -92,31 +75,43 @@ public class DrawingTUI {
         } else if (function.toUpperCase().equals("SAVE")) {
             return save(temp, l);
         } else {
-            System.out.println(function + "n'est pas une fonction valide");
-            throw new CommandeException();
+            throw new CommandeException(function + "n'est pas"
+                    + " une fonction valide");
         }
     }
-    
-    private Commande save(final String temp, final ListeForme l) 
+    /**
+     * methode qui renvoi une commande save.
+     * @param temp nom du groupe de sauvegarde
+     * @param l liste de forme
+     * @return commande de sauvegarde
+     * @throws CommandeException est renvoyé si les arguments ne sont pas bon
+     */
+    private Commande save(final String temp, final ListeForme l)
             throws CommandeException {
         String[] res;
         res = temp.split(",");
         if (res[0].equals("")) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
-        return new CommandeSave(temp,l);
+        return new CommandeSave(temp, l);
     }
-    
+    /**
+     * methode qui renvoi la commande load.
+     * @param temp nom de l'objet
+     * @param l liste de forme
+     * @return commande load
+     * @throws CommandeException est renvoyé si les arguments ne sont pas bon
+     */
     private Commande load(final String temp, final ListeForme l)
             throws CommandeException {
         String[] res;
         res = temp.split(",");
         if (res.length != 1) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument "
+                    + "n'est pas le bon");
         }
-        return new CommandeLoad(temp,l);
+        return new CommandeLoad(temp, l);
     }
     /**
      * methode qui renvoie une commande de supression.
@@ -130,10 +125,10 @@ public class DrawingTUI {
         String[] res;
         res = temp.split(",");
         if (res.length != 1) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
-        return new CommandeDelete(res[0],l);
+        return new CommandeDelete(res[0], l);
     }
     /**
      * methode qui vérifie q'un int est contenu dans le string.
@@ -146,8 +141,7 @@ public class DrawingTUI {
             int val = Integer.parseInt(test);
             return val;
             } catch (Exception e) {
-                System.out.println(test + " n'est pas un entier ");
-                throw new CommandeException();
+                throw new CommandeException(test + " n'est pas un entier ");
             }
     }
     /**
@@ -163,8 +157,8 @@ public class DrawingTUI {
         res = temp.split(",");
         final int  trois = 3;
         if (res.length != trois) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre"
+                    + " d'argument n'est pas le bon");
         }
         int x = estInt(res[1]);
         int y = estInt(res[2]);
@@ -184,8 +178,8 @@ public class DrawingTUI {
         String[] res;
         res = temp.split(",");
         if (res[0].equals("")) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
         return new CommandeGroupe(nom, res, l);
 
@@ -207,8 +201,8 @@ public class DrawingTUI {
         final int cinq = 5;
         final int six = 6;
         if (res.length != six) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre"
+                    + " d'argument n'est pas le bon");
         }
         int x1 = estInt(res[0]);
         int y1 = estInt(res[1]);
@@ -216,7 +210,8 @@ public class DrawingTUI {
         int y2 = estInt(res[trois]);
         int x3 = estInt(res[quatre]);
         int y3 = estInt(res[cinq]);
-        return new CommandeTriangle(x1, y1, x2, y2, x3, y3, nom, l);
+        return new CommandeTriangle(new Point(x1, y1), new Point(x2, y2),
+                new Point(x3, y3), nom, l);
     }
 
     /**
@@ -233,15 +228,14 @@ public class DrawingTUI {
         res = temp.split(",");
         final int quatre = 4;
         if (res.length != quatre) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
         final int trois = 3;
         int x = estInt(res[0]);
         int y = estInt(res[1]);
         int lon = estInt(res[2]);
         int lar = estInt(res[trois]);
-        Rectangle r = new Rectangle(new Point(x, y), lon, lar, nom);
         return new CommandeRectangle(x, y, lon, lar, nom, l);
     }
     /**
@@ -258,8 +252,8 @@ public class DrawingTUI {
         res = temp.split(",");
         final int trois = 3;
         if (res.length != trois) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
         int x = estInt(res[0]);
         int y = estInt(res[1]);
@@ -280,8 +274,9 @@ public class DrawingTUI {
         res = temp.split(",");
         final int trois = 3;
         if (res.length != trois) {
-            System.out.println("le nombre d'argument n'est pas le bon");
-            throw new CommandeException();
+            System.out.println();
+            throw new CommandeException("le nombre d'argument"
+                    + " n'est pas le bon");
         }
         int x = estInt(res[0]);
         int y = estInt(res[1]);

@@ -102,7 +102,37 @@ public class CommandeMove implements Commande {
             } catch (ExistePasException e) {
                 e.printStackTrace();
             }
+            updateAll();
         }
+    }
+    /**
+     * methode qui update les formes du dessin en cours.
+     */
+    private void updateAll() {
+        int size = lObj.getSize();
+        int i;
+        Forme temp;
+        try {
+            for (i = 0; i < size; i++) {
+                temp = lObj.get(0);
+                if (temp instanceof Carre) {
+                    DAO<Carre> d = DAOFactory.getDAOcarre();
+                    lObj.replace(temp.getID(), d.find(temp.getID()));
+                } else if (temp instanceof Cercle) {
+                    DAO<Cercle> d = DAOFactory.getDAOcercle();
+                    lObj.replace(temp.getID(), d.find(temp.getID()));
+                } else if (temp instanceof Rectangle) {
+                    DAO<Rectangle> d = DAOFactory.getDAOrectangle();
+                    lObj.replace(temp.getID(), d.find(temp.getID()));
+                } else if (temp instanceof Triangle) {
+                    DAO<Triangle> d = DAOFactory.getDAOtriangle();
+                    lObj.replace(temp.getID(), d.find(temp.getID()));
+                } else {
+                    DAO<Groupe> d = DAOFactory.getDAOgroupe();
+                    lObj.replace(temp.getID(), d.find(temp.getID()));
+                }
+            }
+        } catch (Exception e) { }
     }
 
 }

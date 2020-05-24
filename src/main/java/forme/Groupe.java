@@ -49,10 +49,11 @@ public class Groupe implements Forme {
      */
     @Override
     public String toString() {
-        String res = "";
+        String res = "groupe " + id;
         Iterator<Forme> i = l.iterator();
         while (i.hasNext()) {
-            res = res + "groupe " + id + " " + "( " + i.next().toString() + " )";
+            res = res + " " + "( " + i.next().toString()
+                    + " )";
         }
         return res;
     }

@@ -31,7 +31,7 @@ public class CommandeCarre implements Commande {
      */
     public CommandeCarre(final int x, final int y, final int size,
             final String nom, final ListeForme l) {
-        obj = new Carre(new Point(x ,y), size, nom);
+        obj = new Carre(new Point(x, y), size, nom);
         lObj = l;
     }
     /**

@@ -37,7 +37,8 @@ public class Cercle implements Forme {
      * @param depl poit qui permet de déplacer un cercle
      */
     public void deplace(final Point depl) {
-        centre = depl;
+        centre = new Point(centre.getX() + depl.getX(), centre.getY()
+                + depl.getY());
     }
 
     /**

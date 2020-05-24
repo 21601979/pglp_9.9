@@ -7,8 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 
+import forme.Carre;
+import forme.Cercle;
 import forme.Forme;
 import forme.Groupe;
+import forme.Rectangle;
+import forme.Triangle;
 import fr.uvsq._9.ExisteDejaException;
 import fr.uvsq._9.ExistePasException;
 /**
@@ -45,7 +49,6 @@ public class DAOgroupe extends DAO<Groupe> {
             prepcreate.setString(1, obj.getID());
             while (it.hasNext()) {
                 Forme temp = (Forme) it.next();
-                System.out.println(temp.getID());
                 prepcreate.setString(2, temp.getID());
                 final int trois = 3;
                 prepcreate.setString(trois, temp.getClass().getSimpleName());
@@ -55,8 +58,6 @@ public class DAOgroupe extends DAO<Groupe> {
                     conect.prepareStatement(addName);
             prepName.setString(1, obj.getID());
             prepName.executeUpdate();
-            System.out.println("le groupe est enregistré avec le nom: "
-                    + obj.getID());
 
             prepsearch.close();
             prepcreate.close();
@@ -80,7 +81,6 @@ public class DAOgroupe extends DAO<Groupe> {
     private Forme addForme(final ResultSet result) {
         try {
             DAO dao = null;
-            System.out.println(result.getString("type"));
             if (result.getString("type").equals("Triangle")) {
                 dao = new DAOtriangle();
             } else if (result.getString("type").equals("Carre")) {
@@ -92,7 +92,6 @@ public class DAOgroupe extends DAO<Groupe> {
             } else if (result.getString("type").equals("Groupe")) {
                 dao = new DAOgroupe();
             }
-            System.out.println("m " + dao);
             return (Forme) dao.find(result.getString("IDforme"));
         } catch (SQLException e) { }
         return null;
@@ -168,12 +167,28 @@ public class DAOgroupe extends DAO<Groupe> {
      */
     @Override
     public Groupe update(final Groupe obj) throws ExistePasException {
-        if (find(obj.getID() + "") != null) {
-            delete(obj);
-            try {
-                create(obj);
-            } catch (ExisteDejaException e) {
-                e.printStackTrace();
+        Groupe g = find(obj.getID());
+        if (g != null) {
+            Iterator<Forme> it = obj.getIterator();
+            Forme temp;
+            while (it.hasNext()) {
+                temp = it.next();
+                if (temp instanceof Carre) {
+                    DAO<Carre> d = DAOFactory.getDAOcarre();
+                    d.update((Carre) temp);
+                } else if (temp instanceof Cercle) {
+                    DAO<Cercle> d = DAOFactory.getDAOcercle();
+                    d.update((Cercle) temp);
+                } else if (temp instanceof Rectangle) {
+                    DAO<Rectangle> d = DAOFactory.getDAOrectangle();
+                    d.update((Rectangle) temp);
+                } else if (temp instanceof Triangle) {
+                    DAO<Triangle> d = DAOFactory.getDAOtriangle();
+                    d.update((Triangle) temp);
+                } else {
+                    DAO<Groupe> d = DAOFactory.getDAOgroupe();
+                    d.update((Groupe) temp);
+                }
             }
         } else {
             throw new ExistePasException();

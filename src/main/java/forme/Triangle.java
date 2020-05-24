@@ -42,11 +42,9 @@ public class Triangle implements Forme {
      * @param depl point qui sert pour le déplacement
      */
     public void deplace(final Point depl) {
-       int diffx = depl.getX() - p1.getX();
-       int diffy = depl.getY() - p1.getY();
-       p1 = depl;
-       p2 = new Point(p2.getX() + diffx, p2.getY() + diffy);
-       p3 = new Point(p3.getX() + diffx, p3.getY() + diffy);
+       p1 = new Point(p1.getX() + depl.getX(), p1.getY() + depl.getY());
+       p2 = new Point(p2.getX() + depl.getX(), p2.getY() + depl.getY());
+       p3 = new Point(p3.getX() + depl.getX(), p3.getY() + depl.getY());
     }
 
     /**

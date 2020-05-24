@@ -13,16 +13,32 @@ import forme.Forme;
 import forme.Groupe;
 import fr.uvsq._9.ExisteDejaException;
 import fr.uvsq._9.ListeForme;
-
+/**
+ * class commande save.
+ * @author Tanguy
+ *
+ */
 public class CommandeSave implements Commande {
-
-    String objLoad;
-    ListeForme l;
+    /**
+     * nom du groupe contenant la sauvegarde.
+     */
+    private String objLoad;
+    /**
+     * liste de forme.
+     */
+    private ListeForme l;
+    /**
+     * constructeur de la commande save.
+     * @param temp nom du groupe contenant la sauvegarde
+     * @param lis liste de forme
+     */
     public CommandeSave(final String temp, final ListeForme lis) {
-        System.out.println("-------"+ temp);
         objLoad = temp;
         l = lis;
     }
+    /**
+     * methode qui sauvegarde un dessin.
+     */
     public void execute() {
         Connection conect;
         try {
@@ -33,9 +49,8 @@ public class CommandeSave implements Commande {
             prepType.setString(1, objLoad);
             ResultSet result = prepType.executeQuery();
             if (result.next()) {
-                System.out.println("le nom "+ objLoad +" est déja utilisé");
-            }
-            else {
+                System.out.println("le nom " + objLoad + " est déja utilisé");
+            } else {
                 Groupe g = new Groupe(objLoad);
                 Iterator<Forme> it = l.getIterator();
                 while (it.hasNext()) {

@@ -52,8 +52,6 @@ public class DAOrectangle extends DAO<Rectangle> {
             prep.setInt(quatre, obj.getSizeY());
             prep.setString(cinq, obj.getID());
             prep.executeUpdate();
-            System.out.println("le rectangle est enregistré avec l'ID "
-            + obj.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

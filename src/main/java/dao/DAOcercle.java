@@ -49,8 +49,6 @@ public class DAOcercle extends DAO<Cercle> {
             prep.setInt(trois, obj.getRayon());
             prep.setString(quatre, obj.getID());
             prep.executeUpdate();
-            System.out.println("le Cercle est enregistré avec l'ID "
-            + obj.getID());
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

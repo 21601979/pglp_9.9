@@ -25,10 +25,14 @@ public class CommandeDelete implements Commande {
      * identifiant de la forme a supprimer.
      */
     private String iD;
+    /**
+     * liste de forme.
+     */
     private ListeForme l;
     /**
      * constructeur de la commande pour suprimer un objet.
      * @param name nom de la forme a supprimer
+     * @param lis liste de forme
      */
     public CommandeDelete(final String name, final ListeForme lis) {
         l = lis;
@@ -45,7 +49,7 @@ public class CommandeDelete implements Commande {
             PreparedStatement prepType = conect.prepareStatement(getType);
             prepType.setString(1, iD);
             ResultSet result = prepType.executeQuery();
-            if(l.search(iD) == null) {
+            if (l.search(iD) == null) {
                 System.out.println("la forme n'existe pas dans le dessin");
             }
             if (result.next()) {
